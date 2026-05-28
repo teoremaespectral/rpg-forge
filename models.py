@@ -78,3 +78,32 @@ class Character:
         '''Retorna o valor numérico do status de forma segura.'''
         stat = self.stats.get(key)
         return stat.value if stat else default
+
+class Player:
+    '''Uma classe representando um jogador, que possui um nome, um ID de usuário, um dicionário de personagens e um personagem ativo.'''
+
+    def __init__(self, name, user_id, is_gm=False):
+        '''Inicializa o jogador com um nome, um ID de usuário e um dicionário vazio de personagens. O personagem ativo é inicialmente None.'''
+        self.name = name
+        self.user_id = user_id
+        self.is_gm = is_gm
+        self.characters = {}
+        self.active_character = None
+
+    @property
+    def active(self):
+        '''Retorna o personagem ativo do jogador.'''
+        return self.active_character
+
+    def add_character(self, character):
+        '''Adiciona um personagem ao jogador. O parâmetro character deve ser uma instância de Character. Se for o primeiro personagem adicionado, ele se torna o personagem ativo.'''
+        self.characters[character.name] = character
+        if not self.active_character:
+            self.active_character = character
+
+    def select_character(self, character_name):
+        '''Seleciona um personagem como o personagem ativo do jogador com base no nome fornecido. Retorna True se a seleção for bem-sucedida, ou False se o personagem não existir.'''
+        if character_name in self.characters:
+            self.active_character = self.characters[character_name]
+            return True
+        return False
