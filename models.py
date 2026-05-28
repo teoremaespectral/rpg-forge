@@ -22,7 +22,7 @@ class Stat:
 class NonzeroStat(Stat):
     '''Uma subclasse de Stat que garante que o valor da estatística nunca seja negativo. Se um valor negativo for atribuído, ele será ajustado para zero.'''
 
-    def __init__(self, name, value):
+    def __init__(self, name, value, icon = "❓", key = "?"):
         '''Inicializa a estatística com um nome e um valor. O valor inicial é ajustado para não ser negativo.'''
         super().__init__(name, max(0, value))
     
@@ -33,9 +33,9 @@ class NonzeroStat(Stat):
     
 class LimitedStat(Stat):
     '''Uma subclasse de Stat que impõe um limite máximo ao valor da estatística. Se um valor que exceda o limite for atribuído, ele será ajustado para o limite.'''
-    def __init__(self, name, value, limit):
+    def __init__(self, name, value, limit, icon = "❓", key = "?"):
         '''Inicializa a estatística com um nome, um valor e um limite máximo. O valor inicial é ajustado para não exceder o limite.'''
-        super().__init__(name, max(0, min(value, limit)))
+        super().__init__(name, max(0, min(value, limit)), icon, key)
         self.limit = limit
 
     @property
