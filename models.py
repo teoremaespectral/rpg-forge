@@ -2,20 +2,12 @@ import setup as s
 
 class Stat:
     '''Uma classe representando uma estatística do personagem, como força, agilidade, etc.'''
-    def __init__(self, name, value):
+    def __init__(self, name, value, icon = "❓", key = "?"):
         '''Inicializa a estatística com um nome e um valor. O nome deve ser uma chave válida em s.STAT.'''
         self.name = name
         self.value = value
-
-    @property
-    def icon(self):
-        '''Retorna o ícone associado à estatística, conforme definido em s.STAT. Se não houver um ícone definido, retorna um ponto de interrogação.'''
-        return s.STAT[self.name].get("icon", "❓")
-    
-    @property
-    def key(self):
-        '''Retorna a chave associada à estatística, conforme definido em s.STAT. Se não houver uma chave definida, retorna um ponto de interrogação.'''
-        return s.STAT[self.name].get("key", "?")
+        self.icon = icon
+        self.key = key
 
     @property
     def display(self):
