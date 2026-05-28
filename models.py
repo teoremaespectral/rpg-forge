@@ -1,4 +1,5 @@
-import setup as s
+from os import stat
+
 
 class Stat:
     '''Uma classe representando uma estatística do personagem, como força, agilidade, etc.'''
@@ -24,7 +25,7 @@ class NonzeroStat(Stat):
 
     def __init__(self, name, value, icon = "❓", key = "?"):
         '''Inicializa a estatística com um nome e um valor. O valor inicial é ajustado para não ser negativo.'''
-        super().__init__(name, max(0, value))
+        super().__init__(name, max(0, value), icon, key)
     
     def change(self, value):
         '''Adiciona um valor à estatística e garante que o valor resultante não seja negativo. Retorna a string formatada atualizada.'''
@@ -53,3 +54,27 @@ class LimitedStat(Stat):
         self.limit = new_limit
         self.value = min(self.value, self.limit)
         return self.display
+    
+class Character:
+    '''Uma classe representando um personagem, que possui um nome e um conjunto de estatísticas.'''
+    def __init__(self, name):
+        '''Inicializa o personagem com um nome e um dicionário vazio de estatísticas.'''
+        self.name = name
+        self.stats = {}
+    
+    def add_stat(self, stat):
+        '''Adiciona uma estatística ao personagem. O parâmetro stat deve ser uma instância de Stat ou suas subclasses.'''
+        self.stats[stat.key] = stat
+    
+    def get_stat(self, key):
+        '''Retorna a estatística associada à chave fornecida. Se a chave não existir, retorna None.'''
+        return self.stats.get(key)
+
+    def __getitem__(self, key):
+        '''Permite acessar o status direto usando colchetes: personagem["v"]'''
+        return self.stats.get(key)
+    
+    def get_value(self, key, default=0):
+        '''Retorna o valor numérico do status de forma segura.'''
+        stat = self.stats.get(key)
+        return stat.value if stat else default
