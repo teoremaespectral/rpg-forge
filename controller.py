@@ -1,4 +1,5 @@
 from models import Stat, NonNegativeStat, LimitedStat, Character, Player
+#from setup import 
 from random import randint
 
 class RollEngine:
@@ -16,3 +17,8 @@ class RollEngine:
             "rolls": rolls,
             "total": total
         }
+
+class SystemFactory:
+    '''Uma classe responsável por criar sistemas de RPG a partir de dados fornecidos por setup.py.'''
+
+    pass
