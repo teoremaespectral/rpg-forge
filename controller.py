@@ -1,5 +1,5 @@
 from models import Stat, NonNegativeStat, LimitedStat, Character, Player
-from setup import StatList, CharacterList, PlayerList
+from setup import PlayerList
 from random import randint
 
 class RollEngine:
@@ -14,8 +14,13 @@ class RollEngine:
         total = stat.value + sum(rolls) + modifier
 
         return {
+            "character": character,
+            "stat": stat_key,
+            "dice_number": dice_number,
+            "dice_sides": dice_sides,
+            "modifier": modifier,
             "rolls": rolls,
-            "total": total
+            "total": total,
         }
 
 class SystemFactory:
@@ -111,7 +116,7 @@ class System:
         self.save()
         return stat.__str__()
 
-class Dispatcher:
+class ActionDispatcher:
     '''Classe responsável por capturar comandos e interações dos jogadores e direcioná-los para as funções apropriadas no sistema.'''
 
     def __init__(self, system):
