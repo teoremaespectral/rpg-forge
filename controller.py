@@ -110,3 +110,53 @@ class System:
         stat += modifier
         self.save()
         return stat.__str__()
+
+class Dispatcher:
+    '''Classe responsável por capturar comandos e interações dos jogadores e direcioná-los para as funções apropriadas no sistema.'''
+
+    def __init__(self, system):
+        self.system = system
+
+    def roll(self, user_id, message):
+        '''Recebe uma mensagem do tipo [atributo] [número de dados]d[número de lados] [modificador opcional] e realiza uma rolagem de dados para o personagem ativo do jogador identificado por user_id. Retorna um dicionário contendo os resultados da rolagem, ou False se a rolagem não puder ser realizada.'''
+        # Exemplo de mensagem: "v 2d6 +3"
+        # Exemplos abreviados: "v +3" ou "v 2d6" ou mesmo "v"
+
+        parts = message.split()
+        player = self.system.game.get(user_id)
+        if not player or not player.active:
+            return False
+
+        try:
+            stat_key = parts[0]
+            dice_number, dice_sides, modifier = 1, 20, 0
+
+            if len(parts) > 1:
+                dice_part = parts[1]
+                if 'd' in dice_part:
+                    dice_number, dice_sides = map(int, dice_part.split('d'))
+                else:
+                    modifier = int(dice_part)
+
+            if len(parts) > 2:
+                modifier = int(parts[2])
+
+            return RollEngine().roll(player.active, stat_key, dice_number, dice_sides, modifier)
+        
+        except (ValueError, IndexError):
+            return False
+
+    def change_current_character(self, user_id, message):
+        '''Recebe uma mensagem com um nome de personagem. Retorna o sucesso da operação'''
+        return self.system.change_current_character(user_id, message)
+    
+    def change_stat(self, user_id, message):
+        '''Recebe uma mensagem composta de [Atributo] [Modificação]. Retorna o sucesso da operação'''
+        try:
+            stat_key, modifier = message.split()
+            modifier = int(modifier)
+            return self.system.change_stat(user_id, stat_key, modifier)
+        
+        except (ValueError, IndexError):
+            return False
+
