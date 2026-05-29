@@ -63,3 +63,50 @@ class SystemFactory:
             player_instance = self.generate_player(player_name)
             system[player_instance.user_id] = player_instance
         return system
+
+class System:
+    '''Classe que mantém e adiministra o sistema de RPG'''
+
+    def __init__(self):
+        if self.is_new():
+            self.game = SystemFactory().create()
+            self.save()
+        else:
+            self.game = self.load()
+    
+    def is_new(self):
+        pass
+
+    def load(self):
+        pass
+
+    def save(self):
+        pass
+
+    def change_current_character(self, user_id, character_name):
+        '''Altera o personagem ativo do jogador identificado por user_id para o personagem com o nome character_name. Retorna True se a alteração for bem-sucedida, ou False se o jogador ou o personagem não existirem.'''
+        player = self.game.get(user_id)
+        if not player:
+            return False
+        
+        change = player.select_character(character_name)
+        self.save()
+        return change
+
+    def change_stat(self, user_id, stat_key, modifier):
+        '''Altera o valor de uma estatística específica para o personagem ativo do jogador identificado por user_id. O valor da estatística é modificado pelo valor do modifier fornecido. Retorna a string formatada atualizada da estatística após a modificação.'''
+        player = self.game.get(user_id)
+        if not player:
+            return ""
+        
+        active_character = player.active
+        if not active_character:
+            return ""
+        
+        stat = active_character.stats.get(stat_key)
+        if not stat:
+            return ""
+        
+        stat += modifier
+        self.save()
+        return stat.__str__()
