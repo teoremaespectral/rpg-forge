@@ -1,16 +1,17 @@
 from controller import System
+from setup import StatList
 
 class Text:
 
     @staticmethod
     def roll_failure():
         '''Texto indicando os formatos corretos para as rolagens'''
-        texto = "⚠️ *Erro na Rolagem de Dados!*\n\n"
-        texto += "Certifique-se de que seu personagem está ativo e use um dos formatos:\n"
-        texto += "• `[atributo] [dados]d[lados] [modificador]` (Ex: `v 2d6 +3`)\n"
-        texto += "• `[atributo] [modificador]` (Ex: `v +3` para usar 1d20 padrão)\n"
-        texto += "• `[atributo]` (Ex: `v` para rolar apenas 1d20 seco)"
-        return texto
+        text = "⚠️ *Erro na Rolagem de Dados!*\n\n"
+        text += "Certifique-se de que seu personagem está ativo e use um dos formatos:\n"
+        text += "• `[atributo] [dados]d[lados] [modificador]` (Ex: `v 2d6 +3`)\n"
+        text += "• `[atributo] [modificador]` (Ex: `v +3` para usar 1d20 padrão)\n"
+        text += "• `[atributo]` (Ex: `v` para rolar apenas 1d20 seco)"
+        return text
 
     @staticmethod
     def roll_success(character, stat, dice_number, dice_sides, modifier, rolls, total):
@@ -18,27 +19,27 @@ class Text:
         # Nome visual do atributo com inicial maiúscula (ex: "v" -> "V")
         stat_display = stat.upper()
         
-        texto = f"🎲 *Rolagem de {character.name}*\n"
-        texto += f"📋 Teste de *{stat_display}*\n"
-        texto += "—" * 15 + "\n"
-        texto += f"🔢 Dados sorteados: `{rolls}`\n"
+        text = f"🎲 *Rolagem de {character.name}*\n"
+        text += f"📋 Teste de *{stat_display}*\n"
+        text += "—" * 15 + "\n"
+        text += f"🔢 Dados sorteados: `{rolls}`\n"
         
         # Só exibe a fórmula se ela não for o 1d20 padrão sem modificador
         if dice_number != 1 or dice_sides != 20 or modifier != 0:
             mod_sign = f"+{modifier}" if modifier >= 0 else f"{modifier}"
-            texto += f"⚙️ Fórmula: `{dice_number}d{dice_sides}{mod_sign}`\n"
+            text += f"⚙️ Fórmula: `{dice_number}d{dice_sides}{mod_sign}`\n"
             
-        texto += f"💥 *Total Final:* `{total}`"
-        return texto
+        text += f"💥 *Total Final:* `{total}`"
+        return text
 
     @staticmethod
     def change_stat_failure():
         '''Texto indicando o formato correto para modificações de atributos'''
-        texto = "⚠️ *Erro ao modificar atributo!*\n\n"
-        texto += "O comando deve seguir o formato:\n"
-        texto += "`[Atributo] [Modificação]`\n"
-        texto += "Exemplos: `hp -5` ou `v +2`"
-        return texto
+        text = "⚠️ *Erro ao modificar atributo!*\n\n"
+        text += "O comando deve seguir o formato:\n"
+        text += "`[Atributo] [Modificação]`\n"
+        text += "Exemplos: `hp -5` ou `v +2`"
+        return text
 
     @staticmethod
     def change_stat_success(stat_string):
@@ -50,11 +51,11 @@ class Text:
     @staticmethod
     def change_character_failure(character_list):
         '''Texto expondo a lista de personagens do jogador'''
-        texto = "⚠️ *Personagem não encontrado!*\n\n"
-        texto += "Escolha um dos seus personagens disponíveis:\n"
+        text = "⚠️ *Personagem não encontrado!*\n\n"
+        text += "Escolha um dos seus personagens disponíveis:\n"
         for char in character_list:
-            texto += f"• `{char.name}`\n"
-        return texto
+            text += f"• `{char.name}`\n"
+        return text
 
     @staticmethod
     def change_character_success(new_character):
@@ -64,37 +65,56 @@ class Text:
     @staticmethod
     def character_info(character):
         '''Dá a ficha do personagem, indicando todos os seus atributos. Separa atributos primários de secundários'''
-        texto = f"🌟 *FICHA DE PERSONAGEM: {character.name.upper()}*\n"
-        texto += "—" * 20 + "\n\n"
-        
-        # Listas para separar os tipos de atributos dinamicamente
-        primarios = []
-        secundarios = []
-        outros = []
-        
-        # Varre os status reais guardados no objeto Character
+        text = f"📜 Ficha de {character.name} \n"
+
+        primary = []
+        secondary = []
+        general = []
+
         for stat in character.stats.values():
-            # Acessamos o setup dele pelo tipo do Enum para saber o papel (role)
-            # Se você não salvou o papel no objeto, podemos deduzir pelo nome/tipo
-            if stat.name.lower() in ["vigor", "destreza", "inteligencia", "carisma"]:
-                primarios.append(str(stat))
-            elif stat.name.lower() in ["vida", "sanidade"]:
-                secundarios.append(str(stat))
-            else:
-                outros.append(str(stat))
-                
-        texto += "⚔️ *Atributos Primários:*\n"
-        texto += "\n".join([f"• {s}" for s in primarios]) + "\n\n"
-        
-        texto += "❤️ *Atributos Secundários:*\n"
-        texto += "\n".join([f"• {s}" for s in secundarios]) + "\n\n"
-        
-        if outros:
-            # Para coisas como o "Caos"
-            texto += "🌀 *Gerais:*\n"
-            texto += "\n".join([f"• {s}" for s in outros]) + "\n"
-            
-        return texto
+            try:
+                stat_info = StatList(stat.name.lower())
+                role = stat_info.config.get("role", "general")
+
+            except ValueError:
+                role = "general"
+
+            if role == "primary":
+                primary.append(stat)
+
+            elif role == "secondary":
+                secondary.append(stat)
+
+            elif role == "general":
+                general.append(stat)
+
+        if primary:
+            for stat in primary:
+                text += str(stat) + "\n"
+            text += "\n"
+
+        if secondary:
+            for stat in secondary:
+                text += str(stat) + "\n"
+            text += "\n"
+
+        if general:
+            for stat in general:
+                text += str(stat) + "\n"
+
+        return text
+    
+    @staticmethod
+    def character_info_failure():
+        '''Texto indicando que não há personagem ativo para se retornar informações'''
+        text = "❌ Você não possui nenhum personagem ativo no momento."
+        return text
+    
+    @staticmethod
+    def not_player():
+        '''Texto indicando que a solicitação partiu de um usuário que não é jogador'''
+        text = "❌ Jogador não identificado."
+        return text
 
 
 class MessageFactory:
@@ -121,18 +141,17 @@ class MessageFactory:
     def change_character(self, user_id, success):
         '''Gera a resposta para a troca de personagem ativo.'''
         player = self.system.game.get(user_id)
+
         if not player:
-            return "❌ Jogador não registrado."
+            return Text.not_player()
             
         if success:
             return Text.change_character_success(player.active)
         else:
-            # Passa a lista de personagens que ele possui para ele escolher o certo
             return Text.change_character_failure(player.characters.values())
 
-    def change_stat(self, user_id, result_string):
+    def change_stat(self, result_string):
         '''Gera a resposta para alteração de atributos.'''
-        # Se o dispatcher retornar False, result_string vira um booleano ou string vazia
         if not result_string:
             return Text.change_stat_failure()
             
@@ -142,6 +161,6 @@ class MessageFactory:
         '''Gera o visual completo da ficha do personagem ativo.'''
         player = self.system.game.get(user_id)
         if not player or not player.active:
-            return "❌ Você não possui nenhum personagem ativo no momento."
+            return Text.character_info_failure()
             
         return Text.character_info(player.active)
