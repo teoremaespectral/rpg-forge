@@ -1,3 +1,5 @@
+from typing import Callable
+
 from Message import Message
 
 handlers = []
@@ -12,5 +14,5 @@ def dispatch(update: dict):
     for handler in handlers:
         handler(m)
 
-def register_handler(handler: callable):
+def register_handler(handler: Callable):
     handlers.append(handler)
