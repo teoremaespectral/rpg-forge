@@ -5,15 +5,6 @@ class Stat:
         self.name = name
         self.value = value
 
-class PlainStat(Stat):
-    def __init__(self, name: str, value: int):
-        super().__init__(name, value)
-
-class LimitedStat(Stat):
-    def __init__(self, name: str, value: int, max_value: int):
-        super().__init__(name, value)
-        self.max_value = max_value
-
 #Characters
 
 class Character:
