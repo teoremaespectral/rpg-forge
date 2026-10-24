@@ -1,138 +1,167 @@
-from enum import Enum
+STATS = {
+    "vig": {
+        "name": "Vigor",
+        "type": "PlainStat",
+        "code": "v",
+    },
+    "dex": {
+        "name": "Destreza",
+        "type": "PlainStat",
+        "code": "d",
+    },
+    "int": {
+        "name": "Inteligência",
+        "type": "PlainStat",
+        "code": "i",
+    },
+    "cha": {
+        "name": "Carisma",
+        "type": "PlainStat",
+        "code": "c",
+    },
+    "hp": {
+        "name": "Pontos de Vida",
+        "type": "LimitedStat",
+        "code": "hp",
+    },
+    "san": {
+        "name": "Sanidade",
+        "type": "LimitedStat",
+        "code": "san",
+    },
+}
 
-class StatList(Enum):
-    """Guarda os nomes das estatísticas e suas respectivas configurações."""
-    VIGOR = "vigor"
-    DESTREZA = "destreza"
-    INTELIGENCIA = "inteligencia"
-    CARISMA = "carisma"
-    VIDA = "vida"
-    SANIDADE = "sanidade"
-    CAOS = "caos"
+CHARACTERS = {
+    "Nick": {
+        "stats": {
+            "vig": 5,
+            "dex": 5,
+            "int": 1,
+            "cha": 2,
+            "hp": 10,
+            "san": 2,
+        },
+    },
 
-    @property
-    def config(self):
-        """Retorna o dicionário de configurações específico deste status."""
-        MAP_CONFIG = {
-            StatList.VIGOR:        {"icon": "💪", "key": "v",  "type": "standard",     "role": "primary"},
-            StatList.DESTREZA:     {"icon": "🎻", "key": "d",  "type": "standard",     "role": "primary"},
-            StatList.INTELIGENCIA: {"icon": "🧩", "key": "i",  "type": "standard",     "role": "primary"},
-            StatList.CARISMA:      {"icon": "🧲", "key": "c",  "type": "standard",     "role": "primary"},
-            StatList.VIDA:         {"icon": "❤️", "key": "hp", "type": "limited",      "role": "secondary"},
-            StatList.SANIDADE:     {"icon": "🧠", "key": "st", "type": "limited",      "role": "secondary"},
-            StatList.CAOS:         {"icon": "🌀", "key": "ch", "type": "non_negative", "role": "general"}
-        }
-        return MAP_CONFIG[self]
+    "Adalberto": {
+        "stats": {
+            "vig": 3,
+            "dex": 0,
+            "int": 4,
+            "cha": 5,
+            "hp": 6,
+            "san": 8,
+        },
+    },
 
-class CharacterList(Enum):
-    '''Guarda os nomes dos personagens pré-definidos e suas respectivas configurações.'''
-    NICK = "Nick"
-    ADALBERTO = "Adalberto Gil"
-    TELLARIM = "Tellarim Rugleffar"
-    MIU = "Miu"
-    VIOLE = "Viole"
-    KAI = "Kai Pirinha"
-    JOSUE = "Josué"
+    "Tellarim": {
+        "stats": {
+            "vig": 5,
+            "dex": 3,
+            "int": 4,
+            "cha": 3,
+            "hp": 10,
+            "san": 8,
+        },
+    },
 
-    @property
-    def config(self):
-        '''Retorna o dicionário de configurações específico deste personagem.'''
-        MAP_CONFIG = {
-            CharacterList.NICK: {
-                "stats": {
-                    StatList.VIGOR: 5,
-                    StatList.DESTREZA: 5,
-                    StatList.INTELIGENCIA: 1,
-                    StatList.CARISMA: 2,
-                    StatList.VIDA: 10,
-                    StatList.SANIDADE: 2,
-                },
-            },
-            CharacterList.ADALBERTO: {
-                "stats": {
-                    StatList.VIGOR: 3,
-                    StatList.DESTREZA: 0,
-                    StatList.INTELIGENCIA: 4,
-                    StatList.CARISMA: 5,
-                    StatList.VIDA: 6,
-                    StatList.SANIDADE: 8,
-                },
-            },
-            CharacterList.TELLARIM: {
-                "stats": {
-                    StatList.VIGOR: 5,
-                    StatList.DESTREZA: 3,
-                    StatList.INTELIGENCIA: 4,
-                    StatList.CARISMA: 3,
-                    StatList.VIDA: 10,
-                    StatList.SANIDADE: 8,
-                },
-            },
-            CharacterList.MIU: {
-                "stats": {
-                    StatList.VIGOR: 2,
-                    StatList.DESTREZA: 5,
-                    StatList.INTELIGENCIA: 4,
-                    StatList.CARISMA: 1,
-                    StatList.VIDA: 4,
-                    StatList.SANIDADE: 8,
-                },
-            },
-            CharacterList.VIOLE: {
-                "stats": {
-                    StatList.VIGOR: 4,
-                    StatList.DESTREZA: 5,
-                    StatList.INTELIGENCIA: 2,
-                    StatList.CARISMA: 1,
-                    StatList.VIDA: 8,
-                    StatList.SANIDADE: 4,
-                },
-            },
-            CharacterList.KAI: {
-                "stats": {
-                    StatList.VIGOR: 1,
-                    StatList.DESTREZA: 3,
-                    StatList.INTELIGENCIA: 5,
-                    StatList.CARISMA: 3,
-                    StatList.VIDA: 2,
-                    StatList.SANIDADE: 10,
-                },
-            },
-            CharacterList.JOSUE: {
-                "stats": {
-                    StatList.VIGOR: 3,
-                    StatList.DESTREZA: 5,
-                    StatList.INTELIGENCIA: 3,
-                    StatList.CARISMA: 1,
-                    StatList.VIDA: 6,
-                    StatList.SANIDADE: 6,
-                },
-            },
-        }
-        return MAP_CONFIG[self]
+    "Miu": {
+        "stats": {
+            "vig": 2,
+            "dex": 5,
+            "int": 4,
+            "cha": 1,
+            "hp": 4,
+            "san": 8,
+        },
+    },
 
-class PlayerList(Enum):
-    '''Guarda os nomes dos jogadores pré-definidos e suas respectivas configurações.'''
-    GABRIEL = "Gabriel"
-    ADRYEL = "Adryel"
-    HOLANDA = "Holanda"
-    VITORIA = "Vitoria"
-    QUEL = "Quel"
-    GLEYDSON = "Gleydson"
-    HIGOR = "Higor"
-    THAIS = "Thais"
+    "Viole": {
+        "stats": {
+            "vig": 4,
+            "dex": 5,
+            "int": 2,
+            "cha": 1,
+            "hp": 8,
+            "san": 4,
+        },
+    },
 
-    @property
-    def config(self):
-        '''Retorna o dicionário de configurações específico deste jogador.'''
-        MAP_CONFIG = {
-            PlayerList.GABRIEL: {"user_id": 123456789, "is_gm": True},
-            PlayerList.ADRYEL: {"user_id": 987654321, "is_gm": False, "characters": [CharacterList.NICK]},
-            PlayerList.HOLANDA: {"user_id": 111111111, "is_gm": False, "characters": [CharacterList.ADALBERTO]},
-            PlayerList.VITORIA: {"user_id": 222222222, "is_gm": False, "characters": [CharacterList.TELLARIM]},
-            PlayerList.QUEL: {"user_id": 333333333, "is_gm": False, "characters": [CharacterList.MIU]},
-            PlayerList.GLEYDSON: {"user_id": 444444444, "is_gm": False, "characters": [CharacterList.VIOLE]},
-            PlayerList.HIGOR: {"user_id": 555555555, "is_gm": False, "characters": [CharacterList.KAI]},
-            PlayerList.THAIS: {"user_id": 666666666, "is_gm": False, "characters": [CharacterList.JOSUE]},
-        }
-        return MAP_CONFIG[self]
+    "Kai": {
+        "stats": {
+            "vig": 1,
+            "dex": 3,
+            "int": 5,
+            "cha": 3,
+            "hp": 2,
+            "san": 10,
+        },
+    },
+
+    "Josué": {
+        "stats": {
+            "vig": 3,
+            "dex": 5,
+            "int": 3,
+            "cha": 1,
+            "hp": 6,
+            "san": 6,
+        },
+    },
+}
+
+PLAYERS = {
+    "Adryel": {
+        "user_id": 1,
+        "is_gm": False,
+        "characters": ["Nick",],
+    },
+
+    "Holanda": {
+        "user_id": 2,
+        "is_gm": False,
+        "characters": ["Adalberto",],
+    },
+
+    "Vitória": {
+        "user_id": 3,
+        "is_gm": False,
+        "characters": ["Tellarim",],
+    },
+
+    "Quel": {
+        "user_id": 4,
+        "is_gm": False,
+        "characters": ["Miu",],
+    },
+
+    "Gleydson": {
+        "user_id": 5,
+        "is_gm": False,
+        "characters": ["Viole",],
+    },
+
+    "Higor": {
+        "user_id": 6,
+        "is_gm": False,
+        "characters": ["Kai",],
+    },
+
+    "Thaís": {
+        "user_id": 7,
+        "is_gm": False,
+        "characters": ["Josué",],
+    },
+
+    "Gabriel": {
+        "user_id": 8,
+        "is_gm": True,
+        "characters": [],
+    },
+}
+
+BOARD = {
+    "name": "Taverna",
+    "board_id": 1,
+    "users": ["Adryel", "Holanda", "Vitória", "Quel", "Gleydson", "Higor", "Thaís", "Gabriel"],
+}
