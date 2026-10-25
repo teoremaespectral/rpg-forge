@@ -4,7 +4,7 @@ import re
 from bot import my_bot
 from Message import Message as M
 
-from controller import RollEngine
+from services import RollEngine
 
 send_message = my_bot.sendMessage
 send_sticker = my_bot.sendSticker

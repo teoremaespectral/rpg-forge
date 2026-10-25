@@ -1,4 +1,4 @@
-from models import Stat, Character, User, Board
+from domain import Stat, Character, User, Board
 import setup
 
 class Manager:

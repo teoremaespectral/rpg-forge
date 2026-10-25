@@ -1,32 +1,26 @@
 STATS = {
     "vig": {
         "name": "Vigor",
-        "type": "PlainStat",
         "code": "v",
     },
     "dex": {
         "name": "Destreza",
-        "type": "PlainStat",
         "code": "d",
     },
     "int": {
         "name": "Inteligência",
-        "type": "PlainStat",
         "code": "i",
     },
     "cha": {
         "name": "Carisma",
-        "type": "PlainStat",
         "code": "c",
     },
     "hp": {
         "name": "Pontos de Vida",
-        "type": "LimitedStat",
         "code": "hp",
     },
     "san": {
         "name": "Sanidade",
-        "type": "LimitedStat",
         "code": "san",
     },
 }
