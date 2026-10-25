@@ -166,3 +166,6 @@ db.json
 
 #Templates
 templates.py
+
+#Setup
+setup.py
