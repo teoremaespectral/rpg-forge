@@ -104,7 +104,7 @@ CHARACTERS = {
     },
 }
 
-PLAYERS = {
+USERS = {
     "Adryel": {
         "user_id": 1,
         "is_gm": False,
