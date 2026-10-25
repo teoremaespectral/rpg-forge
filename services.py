@@ -1,5 +1,41 @@
 from domain import Stat, Character, User, Board
+from random import randint
 import setup
+import re
+
+class RollEngine:
+    '''Class responsible for parsing roll commands and executing rolls.'''
+
+    @staticmethod
+    def roll(num_dice: int = 1, num_sides: int = 20):
+        rolls = [randint(1, num_sides) for _ in range(num_dice)]
+        return sum(rolls), rolls
+
+    @staticmethod
+    def parse_roll_command(command: str):
+        regex = r"((?P<qtd>\d+)d(?P<lados>\d+) *)((?P<modificador>[+-]\d+) *)?"
+        match = re.match(regex, command.lower())
+        
+        if not match:
+            raise ValueError("Invalid roll command format.")
+        
+        num_dice = int(match.group("qtd")) if match.group("qtd") else 1
+        num_sides = int(match.group("lados")) if match.group("lados") else 20
+        modifier = int(match.group("modificador")) if match.group("modificador") else 0
+        
+        return num_dice, num_sides, modifier
+
+    @staticmethod
+    def execute_roll(command: str):
+        num_dice, num_sides, modifier = RollEngine.parse_roll_command(command)
+        total, rolls = RollEngine.roll(num_dice, num_sides)
+        total += modifier
+        return {
+            "rolls": rolls,
+            "modifier": modifier,
+            "total": total
+        }
+
 
 class Manager:
     def __init__(self):
