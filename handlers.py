@@ -4,7 +4,7 @@ import re
 from bot import my_bot
 from Message import Message as M
 
-from services import RollEngine
+from services import Manager
 
 send_message = my_bot.sendMessage
 send_sticker = my_bot.sendSticker
@@ -20,17 +20,9 @@ def roll(m: M):
     if m.command not in ["/roll", "/r"]:
         return
     
-    regex = r"((?P<qtd>\d+)d(?P<lados>\d+) *)((?P<modificador>[+-]\d+) *)?"
-    match = re.match(regex, m.text.lower())
-    
-    qtd = match and int(match.group("qtd")) or 1
-    sides = match and int(match.group("lados")) or 20
-    modificador = match and int(match.group("modificador")) or 0
+    manager = Manager()
+    message = manager.execute_roll(m.text, m.user_id)
 
-
-    dados = [ran(1, sides) for _ in range(qtd)]
-
-    message = f"Dados: {dados}\nmodificador: {modificador}\ntotal: {sum(dados)+modificador}"
     send_message(m.chat_id, message)
 
 
