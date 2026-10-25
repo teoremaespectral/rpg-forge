@@ -1,14 +1,9 @@
-#Stats
-
 class Stat:
     def __init__(self, id: str, name: str, code: str, value: int):
         self.id = id
         self.name = name
         self.code = code
         self.value = value
-
-#Characters
-
 class Character:
     def __init__(self, name: str, stats: list[Stat] = None):
         self.name = name
@@ -22,9 +17,6 @@ class Character:
             if stat.code == code:
                 return stat.name, stat.value
         raise ValueError("Atributo não encontrado.")
-
-#Users
-
 class User:
     def __init__(self, username: str, user_id: int, is_gm: bool = False, characters: list[Character] = None):
         self.username = username
@@ -37,10 +29,6 @@ class User:
         if not self.current_character:
             raise ValueError("Usuário não possui personagem atual.")
         return self.current_character
-
-
-#Board
-
 class Board:
     def __init__(self, name: str, board_id: int, users: list[User] = None):
         self.name = name

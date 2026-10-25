@@ -35,7 +35,6 @@ class RollEngine:
         stat_code = match.group("stat_code") if match.group("stat_code") else None
 
         return num_dice, num_sides, modifier, stat_code
-
 class MessageMaker:
     @staticmethod
     def create_roll_message(roll_result: dict, character_name: str = None, stat_name: str = None, stat_value: int = 0):
@@ -50,7 +49,6 @@ class MessageMaker:
         message += f"Total: {total}\n"
 
         return message
-
 class Manager:
     def __init__(self):
         self.STATS = setup.STATS
