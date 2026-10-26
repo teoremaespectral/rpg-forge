@@ -83,15 +83,21 @@ class Manager:
         total, rolls = RollEngine.roll(num_dice, num_sides)
 
         user = self.board.get_user_by_id(user_id)
+        print(f"User: {user.get_username()}, User ID: {user.user_id}, Is GM: {user.is_gm}")
         character = user.get_current_character()
+        print(f"Character: {character.get_name() if character else 'None'}")
         character_name = character.get_name() if character else None
         stat_name, stat_value = character.get_stat_by_code(stat_code) if stat_code else (None, 0)
         roll_result = {
             "rolls": rolls,
             "modifier": modifier,
-            "total": total + modifier + stat_value + stat_value
+            "total": total + modifier + stat_value
         }
 
         message = MessageMaker.create_roll_message(roll_result, character_name, stat_name, stat_value)
 
         return message
+
+manager = Manager()
+
+print(manager.execute_roll("2d6+3 d", 959501788))

@@ -27,6 +27,9 @@ class User:
 
     def get_current_character(self) -> Character:
         return self.current_character
+
+    def get_username(self) -> str:
+        return self.username
 class Board:
     def __init__(self, name: str, board_id: int, users: list[User] = None):
         self.name = name
