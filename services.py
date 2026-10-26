@@ -84,9 +84,8 @@ class Manager:
 
         user = self.board.get_user_by_id(user_id)
         character = user.get_current_character()
-        character_name = character.get_name()
+        character_name = character.get_name() if character else None
         stat_name, stat_value = character.get_stat_by_code(stat_code) if stat_code else (None, 0)
-
         roll_result = {
             "rolls": rolls,
             "modifier": modifier,

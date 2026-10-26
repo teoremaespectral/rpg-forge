@@ -26,8 +26,6 @@ class User:
         self.current_character = self.characters[0] if self.characters else None
 
     def get_current_character(self) -> Character:
-        if not self.current_character:
-            raise ValueError("Usuário não possui personagem atual.")
         return self.current_character
 class Board:
     def __init__(self, name: str, board_id: int, users: list[User] = None):
